@@ -1,0 +1,82 @@
+{
+    "builders": [
+        {
+            "type": "virtualbox-iso",
+            "boot_command": [
+                "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
+            ],
+            "boot_wait": "5s",
+            "disk_size": 16000,
+            "guest_os_type": "RedHat_64",
+            "headless": true,
+            "http_directory": "http/centos7_lamp",
+            "iso_url": "https://mirror.yandex.ru/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1804.iso",
+            "iso_checksum": "13675c6f74880e7ff3481b91bdaf925ce81bda8f",
+            "iso_checksum_type": "sha1",
+            "ssh_username": "packer",
+            "ssh_password": "packer",
+            "ssh_port": 22,
+            "ssh_wait_timeout": "20000s",
+            "shutdown_command": "sudo poweroff",
+            "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+            "virtualbox_version_file": ".vbox_version",
+            "vboxmanage": [
+                [
+                    "modifyvm",
+                    "{{.Name}}",
+                    "--memory",
+                    "1024"
+                ],
+                [
+                    "modifyvm",
+                    "{{.Name}}",
+                    "--cpus",
+                    "2"
+                ]
+            ]
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "shell",
+            "expect_disconnect": true,
+            "inline": [
+                "sudo yum -y install wget unzip epel-release",
+                "mkdir -p ~/tmp",
+                "cd ~/tmp",
+                "wget https://github.com/AlexeySofree/ansibled/archive/master.zip",
+                "unzip master.zip",
+                "rm -f master.zip",
+                "cd ansibled-master/centos7",
+                "sudo yum -y install ansible",
+                "ansible-playbook docker.yml -i hosts --limit=localhost"
+            ]
+        },
+        {
+            "type": "shell",
+            "pause_before": "10s",
+            "inline": [
+                "cd ~/tmp",
+                "cd ansibled-master/centos7",
+                "ansible-playbook docker.yml -i hosts --limit=localhost"
+            ]
+        },
+        {
+            "type": "shell",
+            "inline": [
+                "cd ~/tmp",
+                "wget https://github.com/AlexeySofree/dockered/archive/master.zip",
+                "unzip master.zip",
+                "rm -f master.zip",
+                "cd dockered-master/lamp",
+                "sudo docker-compose pull",
+                "sudo ./create_users_and_set_perms.sh",
+                "sudo CONSUL_ADVERTISE_PUBLIC_IP= CONSUL_ADVERTISE_FIRST_IP=1 docker-compose up --no-build -d",
+                "sleep 5s",
+                "sudo docker ps",
+                "sudo docker-compose stop",
+                "echo 'Packer build completed:' && date && uptime && uname -a"
+            ]
+        }
+    ]
+}
