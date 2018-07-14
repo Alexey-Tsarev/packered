@@ -20,6 +20,8 @@ A command to build this image:
 ````
 time ./packer_centos7_lamp.sh
 ````
+Output of the above script:  
+https://github.com/AlexeySofree/packered/issues/1
 
 ---
 Good luck!  
