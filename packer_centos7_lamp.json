@@ -44,7 +44,7 @@
                 "sudo yum -y install wget unzip epel-release",
                 "mkdir -p ~/tmp",
                 "cd ~/tmp",
-                "wget https://github.com/AlexeySofree/ansibled/archive/master.zip",
+                "wget https://github.com/Alexey-Tsarev/ansibled/archive/master.zip",
                 "unzip master.zip",
                 "rm -f master.zip",
                 "cd ansibled-master/centos7",
@@ -65,7 +65,7 @@
             "type": "shell",
             "inline": [
                 "cd ~/tmp",
-                "wget https://github.com/AlexeySofree/dockered/archive/master.zip",
+                "wget https://github.com/Alexey-Tsarev/dockered/archive/master.zip",
                 "unzip master.zip",
                 "rm -f master.zip",
                 "cd dockered-master/lamp",

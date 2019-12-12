@@ -8,11 +8,11 @@ It's an CentOS with LAMP stack with fail2ban, Consul and Registrator.
 
 Two projects are used here:  
 The first:
- - https://github.com/AlexeySofree/ansibled (centos7 folder)  
+ - https://github.com/Alexey-Tsarev/ansibled (centos7 folder)  
 prepares CentOS host: install aprropriate packages, update kernel, Docker, Zabbix agent...
 
 The second:
- - https://github.com/AlexeySofree/dockered (https://hub.docker.com/r/alexeysofree)  
+ - https://github.com/Alexey-Tsarev/dockered (https://hub.docker.com/r/alexeytsarev)  
 contains Docker projects (images) to run LAMP stack in Docker
 
 
@@ -21,7 +21,7 @@ A command to build this image:
 time ./packer_centos7_lamp.sh
 ````
 Output of the above script:  
-https://github.com/AlexeySofree/packered/issues/1
+https://github.com/Alexey-Tsarev/packered/issues/1
 
 ---
 Good luck!  
